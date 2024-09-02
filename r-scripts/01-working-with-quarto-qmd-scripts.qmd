@@ -91,8 +91,15 @@ B <- 10
 C <- A + B
 # print the result 
 print(C)
+# calculate the mean of the numbers 1, 3, 7, 12, 46
+my_numbers<-c(1, 3, 7, 12, 46)
+base::mean(my_numbers)     # use function mean from package base
+# if I don't cite then it is from base, otherwise ALWAYS cite the function!
 ```
 
+The sum of 10 and 5 is 15
+
+Then make a plot 
 
 ```{r, message = FALSE, warning = FALSE}
 #| label: fig-histogram
@@ -103,8 +110,10 @@ library(tidyverse)
 set.seed(123)
 # generate 100 random values form a normal distribution with mean=0 and standard deviation 1
 randomvalue <- rnorm(n = 100, mean = 0, sd = 1)
+print(randomvalue)
 # convert to a dataframe
 data1<-data.frame(randomvalue)
+print(data1)
 # plot as a histogram
 ggplot2::ggplot(data=data1, 
                 mapping=aes(x=randomvalue)) +
