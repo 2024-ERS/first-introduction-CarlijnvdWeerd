@@ -119,7 +119,7 @@ drop_na(FactCockleSize) |> # what data table to use
          geom_smooth(method="lm") +
          facet_wrap(~year)  
 # facet_wrap is to make a panel plot, by using ~ you specify in which way the graphs have to be separate
-# to filter the data set you can delete the data= out of the ggplot and pipe it in with |>
+# to filter the data set you can delete the data= out of the ggplot and pipe it in with |>. Since we want to filter out certain years, we use drop_na() to only get graphs from the years with data. 
 ```
 
 We conclude from this that: \* there were two important outliers in the
