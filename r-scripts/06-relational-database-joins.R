@@ -60,17 +60,54 @@ combidat |>
   geom_point() +  
   geom_smooth(method="loess") # fit a linear regression
 
-# predicted at 0.5 m (x)
+# predicted at 0.5 m (x) gives n_obs is 20.8945
+model_lm <- lm(n_obs~elevation_m, data=combidat)
+
+summary(model_lm)
+
 # y = b0 + b1x   (b0 is intercept and b1 is the slope, x is elevation, y is no cockles
+# equation is = intercept + b1 * x 
+# so in this case equation for n_obs = 29.896 + -18.003 * elevation_m
+29.896+-18.003*0.5
 
 # show this model as a line in ggplot, with the confidence interval
+model_lm |>
+  ggplot2::ggplot(aes(x=elevation_m,y=n_obs)) +
+  geom_point() +
+  geom_smooth(method="loess", level= 0.95)
 
 # fit a better model, using a loess smoother
 # show this model in ggplot
+model_lm |>
+  ggplot2::ggplot(aes(x=elevation_m,y=n_obs)) +
+  geom_point() +
+  geom_smooth(method="loess", level= 0.95)
 
 ##### plot  how the size (as mean length) of cockles changes with  elevation along the transect
 # omit the observations where length is NA (because no cockles were measures)
 # fit a quadratic model (second-order polynomial)
 # show for each point also the standard errors
 # add appropriate labels for the x and y axis 
+
+# Filter out NA values in the length column
+combidat <- combidat |>
+  filter(!is.na(avg_l))
+# Fit a quadratic model
+quadratic_model <- lm(avg_l ~ poly(elevation_m, 2), data = combidat)
+# Create the plot
+# Plot the data points
+# Add error bars
+# Add quadratic model line
+# Apply a minimal theme
+ggplot2::ggplot(combidat, aes(x = elevation_m, y = avg_l)) +
+  geom_point() +                                       
+  geom_errorbar(aes(ymin = avg_l - se_l, ymax = avg_l + se_l), width = 0.2) +   geom_smooth(method = "lm", formula = y ~ poly(x, 2), se = FALSE) + 
+  labs( title = "Mean Length of Cockles vs. Elevation",
+         x = "Elevation (m)",
+         y = "Mean Length of Cockles (mm)" ) +
+         theme_minimal()    
+
+
+
+
 
