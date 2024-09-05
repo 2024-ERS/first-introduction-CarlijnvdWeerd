@@ -101,7 +101,7 @@ quadratic_model <- lm(avg_l ~ poly(elevation_m, 2), data = combidat)
 # Apply a minimal theme
 ggplot2::ggplot(combidat, aes(x = elevation_m, y = avg_l)) +
   geom_point() +                                       
-  geom_errorbar(aes(ymin = avg_l - se_l, ymax = avg_l + se_l), width = 0.2) +   geom_smooth(method = "lm", formula = y ~ poly(x, 2), se = FALSE) + 
+  geom_errorbar(aes(ymin = avg_l - se_l, ymax = avg_l + se_l), width = 0.2) +   geom_smooth(method = "lm", formula = y ~ poly(x, 2), se = TRUE) + 
   labs( title = "Mean Length of Cockles vs. Elevation",
          x = "Elevation (m)",
          y = "Mean Length of Cockles (mm)" ) +
