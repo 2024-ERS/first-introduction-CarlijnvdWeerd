@@ -148,7 +148,9 @@ plot(ef_dca,add=T)
 ##### add contour surfaces to the dca ordination for the relevant abiotic variables
 vegan::ordisurf(dca,envdat$clay_cm,add=T,col="green")
 vegan::ordisurf(dca,envdat$elevation_m,add=T,col="brown")
-vegan::ordisurf(dca,vegdat$PlantMar,add=T,col="purple")
+
+# add a species contour
+vegan::ordisurf(dca,vegdat$FestuRub,add=T,col="purple")
 
 ##### make the same plot but using a nmds
 ##### fit the environmental factors to the nmds ordination surface
@@ -163,18 +165,32 @@ vegan::ordisurf(dca,vegdat$PlantMar,add=T,col="purple")
 ##### compare an unconstrainted (DCA) and constrained (CCA) ordination
 # did you miss important environmental factors?
 # show the results of the detrended correspondence analysis
+dca
 
 # the eigenvalues represent the variation explained by each axis
+cca1<-vegan::cca(vegdat~elevation_m+clay_cm+floodprob+DistGulley_m+redox5+redox10,data=envdat)
+summary(cca)
 
 # kick out variables that are least significant - simplify the model
+# check what is significant 
+anova(cca1,by="axis") # CA1,CA2 & CA3 are all significant
+anova(cca1,by="margin") # elevation, flooding & redox5 are significant 
 
+## redo with only important uncorrelated variabesl 
+cca2<-vegan::cca(vegdat~floodprob+DistGulley_m,data=envdat)
+summary(cca2)
+anova(cca2,by="axis")
+anova(cca2,by="margin")
 
 # add the environmental factors to the cca ordination plot
+vegan::ordiplot(cca2,display="sites",cex=1,type="text",
+                xlab="CCA1 (21%)",ylab="CCA2 (14%)")
+vegan::orditorp(cca2,display="species",
+                priority=SpecTotCov,
+                col="red",pcol="red",pch="+",cex=1.1)
+vegan::ordisurf(cca2,envdat$floodprob,add=T,col="blue")
+vegan::ordisurf(cca2,envdat$DistGulley_m,add=T,col="green")
 
-
-# test if the variables and axes (margins) are significant
-
-# You have measured the right things!
 # for example - test this if you would have only measured clay thickness
 
 # yes, clay thickness significantly affects vegetation composition
