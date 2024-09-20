@@ -197,8 +197,18 @@ anova(m8,m7,test="Chisq")
 #add the  model to the plot
 # calculate the predicted value of m2 for every observation, add to the dataset as a variable as pred2
 # add the new predicted line to the previous plot p2, store as object p3 and show it
+p1<- orchdat3  |> 
+  ggplot(mapping=aes(x=elevation_m,y=CountSum,col=factor(year))) +
+  geom_smooth(method="lm",formula="y~x",se=F) + 
+  geom_point(size=3) # louzy model 
+p1
 
-
-
-
+p1<- orchdat3  |> 
+  ggplot(mapping=aes(x=elevation_m,y=CountSum,col=factor(year))) +
+  geom_smooth(method="glm",formula="y~x+I(x^2)",
+              method.args = list(family="poisson"), se=F)
+#           + geom_point(size=3) 
+# without the points, the model gives rise to the optimum of all species without having to do all the stuff we did in the script before. 
+# geom_smooth can thus plus glms but also binomial models 
+p1
 
